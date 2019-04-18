@@ -7,6 +7,8 @@ import springboot.bootdemo.generratorpojo.UserExample;
 import springboot.bootdemo.generratorpojo.UserMapper;
 
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -65,5 +67,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateByPrimaryKey(User record) {
         return userMapper.updateByPrimaryKey(record);
+    }
+
+    @Override
+    public List<User> selectUsers(Map map) {
+        return userMapper.selectUsers(map);
     }
 }

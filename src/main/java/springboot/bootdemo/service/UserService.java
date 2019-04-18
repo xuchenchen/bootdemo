@@ -5,6 +5,7 @@ import springboot.bootdemo.generratorpojo.User;
 import springboot.bootdemo.generratorpojo.UserExample;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     int countByExample(UserExample example);
@@ -28,4 +29,6 @@ public interface UserService {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    List<User> selectUsers(Map map);
 }

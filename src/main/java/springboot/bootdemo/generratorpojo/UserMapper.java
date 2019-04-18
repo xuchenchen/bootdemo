@@ -1,10 +1,12 @@
 package springboot.bootdemo.generratorpojo;
 
-import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import springboot.bootdemo.generratorpojo.User;
-import springboot.bootdemo.generratorpojo.UserExample;
 
+import java.util.List;
+import java.util.Map;
+
+@Mapper
 public interface UserMapper {
     int countByExample(UserExample example);
 
@@ -27,4 +29,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    List<User> selectUsers(Map map);
 }

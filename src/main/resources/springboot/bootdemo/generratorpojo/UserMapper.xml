@@ -142,7 +142,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+    <select id="selectUsers" resultType="springboot.bootdemo.generratorpojo.User" parameterType="map">
+         select * from t_user_demo where user_id in
+      <foreach collection="terminalNos" index="index" item="id" open="(" separator="," close=")">
+        #{id}
+      </foreach>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
     update t_user_demo
     <set >
       <if test="record.userId != null" >
