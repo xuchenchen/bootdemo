@@ -1,6 +1,9 @@
 package springboot.bootdemo.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import springboot.bootdemo.generratorpojo.User;
 import springboot.bootdemo.generratorpojo.UserExample;
@@ -8,11 +11,37 @@ import springboot.bootdemo.generratorpojo.UserMapper;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private UserMapper userMapper;
+
+    @Override
+    public void syncMethod() {
+        sleep();
+    }
+
+    private void sleep() {
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Future<String> asyncMethod() {
+        sleep();
+        logger.info("异步方法内部线程名称：{}", Thread.currentThread().getName());
+        Object a=new Object();
+       Object ab= new AsyncResult<Object>(a);
+        return null;
+    }
 
     @Override
     public int countByExample(UserExample example) {

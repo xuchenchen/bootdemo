@@ -1,13 +1,21 @@
 package springboot.bootdemo.service;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.scheduling.annotation.Async;
 import springboot.bootdemo.generratorpojo.User;
 import springboot.bootdemo.generratorpojo.UserExample;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 public interface UserService {
+    @Async
+    public Future<String> asyncMethod();
+
+
+
+    public void syncMethod();
     int countByExample(UserExample example);
 
     int deleteByExample(UserExample example);
