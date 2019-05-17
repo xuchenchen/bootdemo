@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import springboot.bootdemo.Bean;
 import springboot.bootdemo.generratorpojo.User;
 import springboot.bootdemo.service.UserService;
-import springboot.bootdemo.util.HttpClientUtil;
 import springboot.bootdemo.util.JedisUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,67 +63,6 @@ public class IndexController {
 
     @GetMapping("/toupiao")
     public String toupiao(){
-        try {
-            new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            while (true){
-                                String result= null;
-                                try {
-                                    result = HttpClientUtil.doGet("http://uedapi.ijntv.cn/city_video/caozuo.php?videoid=100&openid="+UUID.randomUUID().toString().replace("-",""));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                System.out.println(result);
-                            }
-
-
-                        }
-                    }
-            ).start();
-
-            new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            while (true){
-                                String result= null;
-                                try {
-                                    result = HttpClientUtil.doGet("http://uedapi.ijntv.cn/city_video/caozuo.php?videoid=100&openid="+UUID.randomUUID().toString().replace("-",""));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                System.out.println(result);
-                            }
-
-
-                        }
-                    }
-            ).start();
-
-            new Thread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            while (true){
-                                String result= null;
-                                try {
-                                    result = HttpClientUtil.doGet("http://uedapi.ijntv.cn/city_video/caozuo.php?videoid=100&openid="+UUID.randomUUID().toString().replace("-",""));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                System.out.println(result);
-                            }
-
-
-                        }
-                    }
-            ).start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return "success"+new Date().getTime();
     }
 
