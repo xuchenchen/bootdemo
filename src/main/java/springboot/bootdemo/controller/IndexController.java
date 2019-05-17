@@ -12,20 +12,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springboot.bootdemo.Bean;
 import springboot.bootdemo.generratorpojo.User;
 import springboot.bootdemo.service.UserService;
+import springboot.bootdemo.util.HttpClientUtil;
+import springboot.bootdemo.util.JedisUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-@RestController
+@Controller
 @RequestMapping("/indexController")
 public class IndexController {
     @Autowired
@@ -36,10 +42,100 @@ public class IndexController {
     @Autowired
     private JavaMailSender jms;
 
+    @Autowired
+    private JedisUtil jedisUtil;
+
     @Value("${spring.mail.username}")
     private String from;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
+    @GetMapping("/redisPostSet")
+    public String redisPostSet(){
+        jedisUtil.set("abc","12345678");
+        return "redisPostSetSuccess";
+    }
+    @GetMapping("/redisPostGet")
+    public String redisPostGet(){
+        return  jedisUtil.get("abc").toString();
+    }
+
+
+    @GetMapping("/toupiao")
+    public String toupiao(){
+        try {
+            new Thread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            while (true){
+                                String result= null;
+                                try {
+                                    result = HttpClientUtil.doGet("http://uedapi.ijntv.cn/city_video/caozuo.php?videoid=100&openid="+UUID.randomUUID().toString().replace("-",""));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println(result);
+                            }
+
+
+                        }
+                    }
+            ).start();
+
+            new Thread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            while (true){
+                                String result= null;
+                                try {
+                                    result = HttpClientUtil.doGet("http://uedapi.ijntv.cn/city_video/caozuo.php?videoid=100&openid="+UUID.randomUUID().toString().replace("-",""));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println(result);
+                            }
+
+
+                        }
+                    }
+            ).start();
+
+            new Thread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            while (true){
+                                String result= null;
+                                try {
+                                    result = HttpClientUtil.doGet("http://uedapi.ijntv.cn/city_video/caozuo.php?videoid=100&openid="+UUID.randomUUID().toString().replace("-",""));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println(result);
+                            }
+
+
+                        }
+                    }
+            ).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "success"+new Date().getTime();
+    }
+
+    @GetMapping("hello")
+    public String hello(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
+//        BufferedImage imageCode =null;
+//        ImageIO.write(imageCode.getImage(), "jpeg", response.getOutputStream());
+
+        return "hello spring security";
+    }
+
 
     @GetMapping("async")
     public void testAsync() throws ExecutionException, InterruptedException {
@@ -98,7 +194,7 @@ public class IndexController {
     @ResponseBody
     @RequestMapping("/insertData")
     public String insertData(){
-        User user=new User(1212,"username","pswd","15888888888");
+        User user=new User(UUID.randomUUID().hashCode(),"username","pswd","15888888888");
         userService.insert(user);
         return "success";
     }
